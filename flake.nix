@@ -34,7 +34,7 @@
           "RelicConfig.json"             = fetchResource "RelicConfig.json" "${baseUrl}/RelicConfig.json" "sha256-gdCPW/El6cAw+KfKYqAPitbPMI+hKzOj5htw7BG9oz0=";
           "RelicMainAffixConfig.json"    = fetchResource "RelicMainAffixConfig.json" "${baseUrl}/RelicMainAffixConfig.json" "sha256-EtKxp0untMcrCOrtq9T+KAS/kJNWd2qBC4vLPJzW7Is=";
           "RelicSubAffixConfig.json"     = fetchResource "RelicSubAffixConfig.json" "${baseUrl}/RelicSubAffixConfig.json" "sha256-UuxusWfanSzXvOdpYNgDH3md4l9L7NfxX00lOg+Uiec=";
-          "TextMapEN.json"               = fetchResource "TextMapEN.json" "${textMapUrl}/TextMapEN.json" "sha256-wzZNi/z/u9B6nW5A54Y7EWFpvG7i25UDncKNw38hLRA=";
+          "TextMapEN.json"               = fetchResource "TextMapEN.json" "${textMapUrl}/TextMapEN.json" "sha256-ckFvlFB83QdDzXTsexOD1aHlcnXVfSz7Jr30K+7BE8k=";
           "Keys.json"                    = fetchResource "Keys.json" "${keysUrl}" "sha256-1ZYQSdpm6V500xp+MIuX1bPTkinV7jxPJKpdvHGWr80=";
         };
 

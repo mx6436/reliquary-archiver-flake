@@ -44,11 +44,11 @@ rustPlatform.buildRustPackage rec {
   src = fetchFromGitHub {
     owner = "IceDynamix";
     repo = "reliquary-archiver";
-    rev = "v${version}";
-    hash = "sha256-jJUziIw6Nv+xP47HC72MQT4Z4JLZG/z0Eeu8akGNBIM=";
+    rev = "d68465d87fd8877e7b70583cca8eb256fd0093e0";
+    hash = "sha256-/qLHN1zoyKmW0t5nL0p14IHfG0DxHqO7bZBtp7WIrb8=";
   };
 
-  cargoHash = "sha256-b6mzgOD/GM7wJywOTuTch4r7/ALe+h4Kf1UYcFAomdA=";
+  cargoHash = "sha256-xt0hIAiQbUqlnJIhHvcrWJNv0W1JUasrBsJ62pxSeXc=";
 
   nativeBuildInputs = [ pkg-config ];
   buildInputs = [ wayland libpcap ];

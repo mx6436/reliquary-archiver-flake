@@ -6,15 +6,32 @@
     flake-utils.url = "github:numtide/flake-utils";
   };
 
-  outputs = { self, nixpkgs, flake-utils }:
-    flake-utils.lib.eachDefaultSystem (system:
-      let pkgs = nixpkgs.legacyPackages.${system}; in
+  outputs =
+    {
+      self,
+      nixpkgs,
+      flake-utils,
+    }:
+    flake-utils.lib.eachSystem [ "x86_64-linux" "aarch64-linux" ] (
+      system:
+      let
+        pkgs = nixpkgs.legacyPackages.${system};
+      in
       {
-        packages.default = pkgs.callPackage ./package.nix {};
+        formatter = pkgs.nixfmt-tree;
+        packages.default = pkgs.callPackage ./package.nix { };
       }
     )
-    //
-    {  
-      nixosModules.default = import ./module.nix;
+    // {
+      overlays.default = final: prev: {
+        reliquary-archiver = self.packages.${final.stdenv.hostPlatform.system}.default;
+      };
+
+      nixosModules.default =
+        { pkgs, ... }:
+        {
+          imports = [ ./module.nix ];
+          _module.args.reliquary-archiver = self.packages.${pkgs.stdenv.hostPlatform.system}.default;
+        };
     };
 }

@@ -1,22 +1,33 @@
-{ config, lib, pkgs, ... }:
-
+{
+  config,
+  lib,
+  pkgs,
+  reliquary-archiver,
+  ...
+}:
 let
   cfg = config.programs.reliquary-archiver;
-  pkg = pkgs.callPackage ./package.nix {};
 in
 {
   options.programs.reliquary-archiver = {
     enable = lib.mkEnableOption "reliquary-archiver";
+
+    package = lib.mkOption {
+      type = lib.types.package;
+      default = reliquary-archiver;
+      defaultText = lib.literalExpression "reliquary-archiver";
+      description = "The reliquary-archiver package to use.";
+    };
   };
 
   config = lib.mkIf cfg.enable {
-    environment.systemPackages = [ pkg ];
+    environment.systemPackages = [ cfg.package ];
 
     security.wrappers.reliquary-archiver = {
       owner = "root";
       group = "root";
       capabilities = "cap_net_raw+ep";
-      source = "${pkg}/bin/reliquary-archiver";
+      source = "${lib.getExe cfg.package}";
     };
   };
 }

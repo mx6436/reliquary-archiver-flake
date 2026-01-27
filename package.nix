@@ -10,7 +10,7 @@
 }:
 
 let
-  gameDataRev = "3c7d78ecdd432dd73d3fc8d6cb85033e07a69a5b";
+  gameDataRev = "1eea1d39100ba201f30059404a5a71ee83340108";
   keysRev = "44e55d019b2ea962bc36086ac6341cd85ddc8247";
 
   baseUrl = "https://gitlab.com/Dimbreath/turnbasedgamedata/-/raw/${gameDataRev}/ExcelOutput";
@@ -59,7 +59,7 @@ let
         "sha256-UuxusWfanSzXvOdpYNgDH3md4l9L7NfxX00lOg+Uiec=";
     "TextMapEN.json" =
       fetchResource "TextMapEN.json" "${textMapUrl}/TextMapEN.json"
-        "sha256-ckFvlFB83QdDzXTsexOD1aHlcnXVfSz7Jr30K+7BE8k=";
+        "sha256-w59wTn2qM05Y5qIwItYLngUhag+sN2yvaLdEbYx05q4=";
     "Keys.json" =
       fetchResource "Keys.json" "${keysUrl}/Keys.json"
         "sha256-1ZYQSdpm6V500xp+MIuX1bPTkinV7jxPJKpdvHGWr80=";

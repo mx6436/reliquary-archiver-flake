@@ -3,7 +3,6 @@
   rustPlatform,
   fetchFromGitHub,
   fetchurl,
-
   pkg-config,
   wayland,
   libpcap,
@@ -99,12 +98,12 @@ rustPlatform.buildRustPackage {
     }' build.rs
   '';
 
-  meta = with lib; {
+  meta = {
     description = "Tool to create a relic export from network packets of a certain turn-based anime game";
     homepage = "https://github.com/IceDynamix/reliquary-archiver";
-    license = licenses.mit;
+    license = lib.licenses.mit;
     maintainers = [ ];
     mainProgram = "reliquary-archiver";
-    platforms = platforms.linux;
+    platforms = lib.platforms.linux;
   };
 }

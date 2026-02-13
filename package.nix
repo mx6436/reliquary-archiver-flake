@@ -68,16 +68,16 @@ in
 
 rustPlatform.buildRustPackage {
   pname = "reliquary-archiver";
-  version = "0.12.3";
+  version = "0.13.0";
 
   src = fetchFromGitHub {
     owner = "IceDynamix";
     repo = "reliquary-archiver";
-    rev = "d68465d87fd8877e7b70583cca8eb256fd0093e0";
-    hash = "sha256-/qLHN1zoyKmW0t5nL0p14IHfG0DxHqO7bZBtp7WIrb8=";
+    rev = "dd5b89f126ed32ed32379030aac003299b7409b1";
+    hash = "sha256-Va4ngAq/iQ2+1D7roFwe7GyQzLx7VRDcpBoCDCPmWJk=";
   };
 
-  cargoHash = "sha256-xt0hIAiQbUqlnJIhHvcrWJNv0W1JUasrBsJ62pxSeXc=";
+  cargoHash = "sha256-AX3+hOwMVrM63mMbDixNSmuumJYm7HOFzJXcCWmshzY=";
 
   nativeBuildInputs = [ pkg-config ];
 

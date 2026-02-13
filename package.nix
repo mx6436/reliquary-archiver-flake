@@ -9,60 +9,25 @@
 }:
 
 let
-  gameDataRev = "cc5572bcc1305735fba96b91202f998ccc3a2a21";
-  keysRev = "44e55d019b2ea962bc36086ac6341cd85ddc8247";
+  sources = lib.importJSON ./sources.json;
 
-  baseUrl = "https://gitlab.com/Dimbreath/turnbasedgamedata/-/raw/${gameDataRev}/ExcelOutput";
-  textMapUrl = "https://gitlab.com/Dimbreath/turnbasedgamedata/-/raw/${gameDataRev}/TextMap";
-  keysUrl = "https://raw.githubusercontent.com/tamilpp25/Iridium-SR/${keysRev}/data";
+  baseUrl = "https://gitlab.com/Dimbreath/turnbasedgamedata/-/raw/${sources.gameDataRev}";
+  keysUrl = "https://raw.githubusercontent.com/tamilpp25/Iridium-SR/${sources.keysRev}/data";
 
-  fetchResource =
-    name: url: hash:
-    fetchurl {
-      inherit name url hash;
-    };
-
-  resources = {
-    "AvatarConfig.json" =
-      fetchResource "AvatarConfig.json" "${baseUrl}/AvatarConfig.json"
-        "sha256-xGyfZ/w3T4RQOFK9GSfd0L4BQFfkrxxHN5HCNMRi7b0=";
-    "AvatarConfigLD.json" =
-      fetchResource "AvatarConfigLD.json" "${baseUrl}/AvatarConfigLD.json"
-        "sha256-vUbEta5WhV4YAX1lu1Vya3ey0jqztIexW4KV0mVfR0g=";
-    "EquipmentConfig.json" =
-      fetchResource "EquipmentConfig.json" "${baseUrl}/EquipmentConfig.json"
-        "sha256-9RFdFJGePRCFUMDusEOnHSIa6sy7LRt9+vYDg8O61hU=";
-    "RelicSetConfig.json" =
-      fetchResource "RelicSetConfig.json" "${baseUrl}/RelicSetConfig.json"
-        "sha256-8Q7LhIyMo3moyT6kwYvvv8HjwVJoAz+7sTMXpr9KJB8=";
-    "ItemConfig.json" =
-      fetchResource "ItemConfig.json" "${baseUrl}/ItemConfig.json"
-        "sha256-9aXaKY8B6Uyca0gaWRt4f8FYfZtL2iIe8O3KUnReS5I=";
-    "AvatarSkillTreeConfig.json" =
-      fetchResource "AvatarSkillTreeConfig.json" "${baseUrl}/AvatarSkillTreeConfig.json"
-        "sha256-BN+GpoXiQ9P608uSk2vGZ8+LZQhrW94pY2/saTITzsQ=";
-    "AvatarSkillTreeConfigLD.json" =
-      fetchResource "AvatarSkillTreeConfigLD.json" "${baseUrl}/AvatarSkillTreeConfigLD.json"
-        "sha256-9DJBB3ayCeWy55uciLpRe2LxtJio9cEUod2UG6colYQ=";
-    "MultiplePathAvatarConfig.json" =
-      fetchResource "MultiplePathAvatarConfig.json" "${baseUrl}/MultiplePathAvatarConfig.json"
-        "sha256-ZCMIA8x/Y2pu95wYWpL2j9YVsLthjbNrvVlf5h9Vbfk=";
-    "RelicConfig.json" =
-      fetchResource "RelicConfig.json" "${baseUrl}/RelicConfig.json"
-        "sha256-QpVp6f/EOA0/eR7AeaXdr6WLLt6B6Xf77IJTrAPaRtU=";
-    "RelicMainAffixConfig.json" =
-      fetchResource "RelicMainAffixConfig.json" "${baseUrl}/RelicMainAffixConfig.json"
-        "sha256-EtKxp0untMcrCOrtq9T+KAS/kJNWd2qBC4vLPJzW7Is=";
-    "RelicSubAffixConfig.json" =
-      fetchResource "RelicSubAffixConfig.json" "${baseUrl}/RelicSubAffixConfig.json"
-        "sha256-UuxusWfanSzXvOdpYNgDH3md4l9L7NfxX00lOg+Uiec=";
-    "TextMapEN.json" =
-      fetchResource "TextMapEN.json" "${textMapUrl}/TextMapEN.json"
-        "sha256-E9aw/4NUnqvNEx3jPNqpaW4BvPwcAp8Dlfka5VhM2J0=";
-    "Keys.json" =
-      fetchResource "Keys.json" "${keysUrl}/Keys.json"
-        "sha256-1ZYQSdpm6V500xp+MIuX1bPTkinV7jxPJKpdvHGWr80=";
-  };
+  resources = lib.mapAttrs (
+    name: hash:
+    let
+      # 根据文件名判断 URL 路径
+      url =
+        if name == "Keys.json" then
+          "${keysUrl}/${name}"
+        else if name == "TextMapEN.json" then
+          "${baseUrl}/TextMap/${name}"
+        else
+          "${baseUrl}/ExcelOutput/${name}";
+    in
+    fetchurl { inherit name url hash; }
+  ) sources.resources;
 in
 
 rustPlatform.buildRustPackage {
@@ -97,6 +62,8 @@ rustPlatform.buildRustPackage {
         ureq::serde_json::from_reader(file).expect(&format!("Failed to parse json from file: {}", filename))\
     }' build.rs
   '';
+
+  passthru.updateScript = ./update.fish;
 
   meta = {
     description = "Tool to create a relic export from network packets of a certain turn-based anime game";

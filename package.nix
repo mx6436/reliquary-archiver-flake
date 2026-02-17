@@ -44,17 +44,10 @@ rustPlatform.buildRustPackage {
     libpcap
   ];
 
+  patches = [ ./fix-build.patch ];
+
   postPatch = ''
     ${lib.concatStringsSep "\n" (lib.mapAttrsToList (name: file: "ln -s ${file} ${name}") resources)}
-
-    sed -i 's/HashMap/BTreeMap/g' build.rs
-
-    sed -i '/fn download_as_json/,/^}/c\
-    fn download_as_json<T: DeserializeOwned>(url: &str) -> T {\
-        let filename = url.rsplit("/").next().unwrap();\
-        let file = File::open(filename).expect(&format!("Failed to open local file: {}", filename));\
-        ureq::serde_json::from_reader(file).expect(&format!("Failed to parse json from file: {}", filename))\
-    }' build.rs
   '';
 
   passthru.updateScript = ./update.fish;

@@ -12,19 +12,13 @@ let
   sources = lib.importJSON ./sources.json;
 
   baseUrl = "https://gitlab.com/Dimbreath/turnbasedgamedata/-/raw/${sources.gameDataRev}";
-  keysUrl = "https://raw.githubusercontent.com/tamilpp25/Iridium-SR/${sources.keysRev}/data";
 
   resources = lib.mapAttrs (
     name: hash:
     let
       # 根据文件名判断 URL 路径
       url =
-        if name == "Keys.json" then
-          "${keysUrl}/${name}"
-        else if name == "TextMapEN.json" then
-          "${baseUrl}/TextMap/${name}"
-        else
-          "${baseUrl}/ExcelOutput/${name}";
+        if name == "TextMapEN.json" then "${baseUrl}/TextMap/${name}" else "${baseUrl}/ExcelOutput/${name}";
     in
     fetchurl { inherit name url hash; }
   ) sources.resources;
@@ -32,16 +26,16 @@ in
 
 rustPlatform.buildRustPackage {
   pname = "reliquary-archiver";
-  version = "0.13.0";
+  version = "0.13.2";
 
   src = fetchFromGitHub {
     owner = "IceDynamix";
     repo = "reliquary-archiver";
-    rev = "dd5b89f126ed32ed32379030aac003299b7409b1";
-    hash = "sha256-Va4ngAq/iQ2+1D7roFwe7GyQzLx7VRDcpBoCDCPmWJk=";
+    rev = "57fad800649523271a29f98b4c943f45830925a5";
+    hash = "sha256-61jl8z43tGfnu65IyUTDo7m8PEke/OPVeJSFNitCngc=";
   };
 
-  cargoHash = "sha256-AX3+hOwMVrM63mMbDixNSmuumJYm7HOFzJXcCWmshzY=";
+  cargoHash = "sha256-YMWTpUd6Oi9dqBl8YwSzOsmmxlwmlEh902Z4pTD8NjQ=";
 
   nativeBuildInputs = [ pkg-config ];
 
